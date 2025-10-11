@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>WellBeing Hospital - Doctor Appointment System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Dark theme styles */
+        .dark {
+            color-scheme: dark;
+        }
+
+        .dark body {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+
+        .dark .bg-white {
+            background-color: #1f2937 !important;
+        }
+
+        .dark .text-gray-600,
+        .dark .text-gray-700,
+        .dark .text-gray-800 {
+            color: #d1d5db !important;
+        }
+
+        .dark .bg-gray-50 {
+            background-color: #111827 !important;
+        }
+
+        .dark .bg-gray-100 {
+            background-color: #374151 !important;
+        }
+
+        .dark .border-gray-200 {
+            border-color: #374151 !important;
+        }
+
+        .dark .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .dark input,
+        .dark select,
+        .dark textarea {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #f9fafb !important;
+        }
+
+        .dark input::placeholder,
+        .dark textarea::placeholder {
+            color: #9ca3af !important;
+        }
+
+        .dark #adminPassword {
+            background-color: #374151 !important;
+            border-color: #4b5563 !important;
+            color: #f9fafb !important;
+        }
+
+        .dark .bg-blue-600 {
+            background-color: #2563eb !important;
+        }
+
+        .dark .bg-green-600 {
+            background-color: #059669 !important;
+        }
+
+        .dark .bg-red-600 {
+            background-color: #dc2626 !important;
+        }
+
+        .dark .sticky-nav {
+            background: rgba(31, 41, 55, 0.95);
+        }
+
+        .dark .text-gray-900 {
+            color: #f9fafb !important;
+        }
+
+        .dark .border {
+            border-color: #374151 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Notification System -->
+    <div id="notification-container"></div>
+
+    <!-- Header -->
+    <header class="sticky-nav shadow-sm z-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-stethoscope text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400">WellBeing Hospital</h1>
+                        <p class="text-xs text-gray-600 dark:text-gray-300">Quality Healthcare</p>
+                    </div>
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#hero">
+                        <i class="fas fa-home text-sm"></i>
+                        <span>Home</span>
+                    </a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#doctors">
+                        <i class="fas fa-user-md text-sm"></i>
+                        <span>Doctors</span>
+                    </a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#appointment">
+                        <i class="fas fa-calendar-check text-sm"></i>
+                        <span>Book Appointment</span>
+                    </a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#services">
+                        <i class="fas fa-procedures text-sm"></i>
+                        <span>Services</span>
+                    </a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#admin">
+                        <i class="fas fa-cogs text-sm"></i>
+                        <span>Admin</span>
+                    </a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                    <button class="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none" id="mobile-menu-button">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="lg:hidden hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#hero">
+                    <i class="fas fa-home w-5"></i>
+                    <span>Home</span>
+                </a>
+                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#doctors">
+                    <i class="fas fa-user-md w-5"></i>
+                    <span>Doctors</span>
+                </a>
+                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#appointment">
+                    <i class="fas fa-calendar-check w-5"></i>
+                    <span>Book Appointment</span>
+                </a>
+                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#services">
+                    <i class="fas fa-procedures w-5"></i>
+                    <span>Services</span>
+                </a>
+                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#admin">
+                    <i class="fas fa-cogs w-5"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section id="hero" class="gradient-bg text-white py-20">
+            <div class="container mx-auto px-4 text-center">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-5xl font-bold mb-6 slide-in">Your Health is Our Priority</h1>
+                    <p class="text-xl mb-8 opacity-90">Book appointments with top specialists. Quality healthcare made simple and accessible.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#appointment" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Book Appointment Now</span>
+                        </a>
+                        <a href="#doctors" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
+                            <i class="fas fa-user-md"></i>
+                            <span>Find a Doctor</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="bg-white dark:bg-gray-800 py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="fade-in">
+                        <div class="text-3xl font-bold text-blue-600 mb-2" id="doctors-count">0</div>
+                        <div class="text-gray-600 dark:text-gray-300">Expert Doctors</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-3xl font-bold text-green-600 mb-2" id="appointments-count">0</div>
+                        <div class="text-gray-600 dark:text-gray-300">Appointments</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-3xl font-bold text-purple-600 mb-2" id="patients-count">0</div>
+                        <div class="text-gray-600 dark:text-gray-300">Happy Patients</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-3xl font-bold text-orange-600 mb-2">24/7</div>
+                        <div class="text-gray-600 dark:text-gray-300">Support</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-16 bg-gray-50 dark:bg-gray-900">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-gray-800 dark:text-white mb-12">Our Medical Services</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-heartbeat text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Cardiology</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Comprehensive heart care with advanced diagnostic and treatment facilities.</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-baby text-green-600 dark:text-green-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Pediatrics</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Specialized care for children's health and developmental needs.</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-brain text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Neurology</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Expert care for brain and nervous system disorders.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doctors Section -->
+        <section id="doctors" class="py-16 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-gray-800 dark:text-white mb-4">Meet Our Specialists</h2>
+                <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">Our team of experienced doctors is dedicated to providing you with the best medical care.</p>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="flex space-x-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all bg-blue-600 text-white" data-specialty="all">All</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Cardiologist">Cardiology</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Pediatrician">Pediatrics</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Dermatologist">Dermatology</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Neurologist">Neurology</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="doctors-container">
+                    <!-- Doctors loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointment Section -->
+        <section id="appointment" class="py-16 bg-gray-50 dark:bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                    <div class="md:flex">
+                        <div class="md:w-2/5 bg-blue-600 text-white p-8">
+                            <h2 class="text-3xl font-bold mb-4">Book Your Appointment</h2>
+                            <p class="mb-6">Fill out the form and our team will contact you to confirm your appointment.</p>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-clock text-blue-200"></i>
+                                    <span>Quick & Easy Booking</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-shield-alt text-blue-200"></i>
+                                    <span>Secure & Confidential</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-calendar-check text-blue-200"></i>
+                                    <span>Instant Confirmation</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:w-3/5 p-8">
+                            <form id="appointment-form" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="fullName">
+                                            Full Name *
+                                        </label>
+                                        <input type="text" id="fullName" name="fullName" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            placeholder="Enter your full name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="email">
+                                            Email Address *
+                                        </label>
+                                        <input type="email" id="email" name="email" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            placeholder="your@email.com">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="phone">
+                                            Phone Number *
+                                        </label>
+                                        <input type="tel" id="phone" name="phone" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            placeholder="+1 (555) 123-4567">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="doctor">
+                                            Select Doctor *
+                                        </label>
+                                        <select id="doctor" name="doctor" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            <option value="">Choose a doctor</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="date">
+                                            Preferred Date *
+                                        </label>
+                                        <input type="date" id="date" name="date" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="time">
+                                            Preferred Time *
+                                        </label>
+                                        <select id="time" name="time" required
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            <option value="">Select time</option>
+                                            <option value="09:00">09:00 AM</option>
+                                            <option value="10:00">10:00 AM</option>
+                                            <option value="11:00">11:00 AM</option>
+                                            <option value="12:00">12:00 PM</option>
+                                            <option value="14:00">02:00 PM</option>
+                                            <option value="15:00">03:00 PM</option>
+                                            <option value="16:00">04:00 PM</option>
+                                            <option value="17:00">05:00 PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="notes">
+                                        Additional Notes
+                                    </label>
+                                    <textarea id="notes" name="notes" rows="3"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                        placeholder="Any specific concerns or requests..."></textarea>
+                                </div>
+
+                                <button type="submit" id="submit-btn"
+                                    class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+                                    <span id="submit-text">Confirm Appointment</span>
+                                    <div id="submit-spinner" class="hidden loading-spinner">
+                                        <i class="fas fa-spinner"></i>
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="admin" class="py-16 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">Admin Dashboard</h2>
+                    
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+                            <input type="password" id="adminPassword" 
+                                class="flex-grow px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                                placeholder="Enter admin password">
+                            <button onclick="showAppointments()" 
+                                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fas fa-eye"></i>
+                                <span>View Appointments</span>
+                            </button>
+                            <button onclick="refreshAppointmentsList()" 
+                                class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Refresh</span>
+                            </button>
+                            <button onclick="clearAllAppointments()" 
+                                class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fas fa-trash"></i>
+                                <span>Clear All</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="appointments-list" class="hidden space-y-4">
+                        <!-- Appointments loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">WellBeing Hospital</h3>
+                    <p class="text-gray-300">Providing quality healthcare services with compassion and excellence.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#doctors" class="hover:text-white transition-colors">Find a Doctor</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#appointment" class="hover:text-white transition-colors">Book Appointment</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p class="flex items-center space-x-2">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>23 Sterling St, Sydney HC 45678</span>
+                        </p>
+                        <p class="flex items-center space-x-2">
+                            <i class="fas fa-phone"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </p>
+                        <p class="flex items-center space-x-2">
+                            <i class="fas fa-envelope"></i>
+                            <span>support@wellbeinghospital.com</span>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Emergency</h4>
+                    <div class="bg-red-600 rounded-lg p-4">
+                        <p class="font-bold text-lg">24/7 Emergency</p>
+                        <p class="text-sm">Call: +1 (555) 911-HELP</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 WellBeing Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+        class EnhancedAppointmentSystem {
+            constructor() {
+                this.currentTheme = 'light';
+                this.doctors = [];
+                this.appointments = [];
+                this.init();
+            }
+
+            async init() {
+                await this.loadDoctors();
+                this.setupEventListeners();
+                this.setupTheme();
+                this.animateStats();
+                this.setupRealTimeUpdates();
+            }
+
+            async loadDoctors() {
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    this.doctors = [
+                        {
+                            id: 1,
+                            name: "Dr. Alice Smith",
+                            specialty: "Cardiologist",
+                            image: "https://storage.googleapis.com/a1aa/image/4f01e17c-c144-4a95-1f78-b36116685610.jpg",
+                            description: "Expert in heart health and cardiovascular diseases with 10 years of experience.",
+                            experience: "10 years",
+                            rating: 4.9,
+                            available: true
+                        },
+                        {
+                            id: 2,
+                            name: "Dr. John Doe",
+                            specialty: "Pediatrician",
+                            image: "https://storage.googleapis.com/a1aa/image/a89d38ec-1627-4fad-af2d-83f5c3da1f1a.jpg",
+                            description: "Caring for children's health and wellness with over 8 years of pediatric experience.",
+                            experience: "8 years",
+                            rating: 4.8,
+                            available: true
+                        },
+                        {
+                            id: 3,
+                            name: "Dr. Maria Lopez",
+                            specialty: "Dermatologist",
+                            image: "https://storage.googleapis.com/a1aa/image/ee0515b6-c7f7-4a52-b415-d40909f4a292.jpg",
+                            description: "Specialist in skin care and treatment with 12 years of clinical experience.",
+                            experience: "12 years",
+                            rating: 4.9,
+                            available: true
+                        },
+                        {
+                            id: 4,
+                            name: "Dr. David Nguyen",
+                            specialty: "Neurologist",
+                            image: "https://storage.googleapis.com/a1aa/image/9f3f63d3-7840-4fae-3699-1cfc387017a3.jpg",
+                            description: "Experienced neurologist focusing on brain and nervous system disorders.",
+                            experience: "15 years",
+                            rating: 4.7,
+                            available: true
+                        },
+                        {
+                            id: 5,
+                            name: "Dr. Emma Johnson",
+                            specialty: "General Practitioner",
+                            image: "https://storage.googleapis.com/a1aa/image/b0dcd950-d2de-47e2-3a53-88b50bec994b.jpg",
+                            description: "Providing comprehensive primary care and health advice for all ages.",
+                            experience: "9 years",
+                            rating: 4.8,
+                            available: true
+                        },
+                        {
+                            id: 6,
+                            name: "Dr. Michael Brown",
+                            specialty: "Orthopedic Surgeon",
+                            image: "https://storage.googleapis.com/a1aa/image/f7709932-2855-49d4-32c6-d24c6f957740.jpg",
+                            description: "Specialist in bone and joint surgery with 15 years of surgical experience.",
+                            experience: "15 years",
+                            rating: 4.9,
+                            available: true
+                        }
+                    ];
+
+                    this.renderDoctors();
+                    this.populateDoctorSelect();
+                    this.updateStats();
+                } catch (error) {
+                    this.showNotification('Error loading doctors', 'error');
+                }
+            }
+
+            renderDoctors(filter = 'all') {
+                const container = document.getElementById('doctors-container');
+                const filteredDoctors = filter === 'all' 
+                    ? this.doctors 
+                    : this.doctors.filter(doctor => doctor.specialty === filter);
+
+                container.innerHTML = filteredDoctors.map(doctor => `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover fade-in border border-gray-200 dark:border-gray-700">
+                        <div class="relative">
+                            <img src="${doctor.image}" alt="${doctor.name}" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
+                                ${doctor.rating} ★
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${doctor.name}</h3>
+                            <p class="text-blue-600 dark:text-blue-400 font-semibold mb-3">${doctor.specialty}</p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">${doctor.description}</p>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-sm text-gray-500 dark:text-gray-400">${doctor.experience} experience</span>
+                                <span class="text-sm ${doctor.available ? 'text-green-600' : 'text-red-600'} font-semibold">
+                                    ${doctor.available ? 'Available' : 'Not Available'}
+                                </span>
+                            </div>
+                            <button onclick="appSystem.bookWithDoctor('${doctor.name}', '${doctor.specialty}')" 
+                                class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2 ${!doctor.available ? 'opacity-50 cursor-not-allowed' : ''}"
+                                ${!doctor.available ? 'disabled' : ''}>
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Book Appointment</span>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            populateDoctorSelect() {
+                const select = document.getElementById('doctor');
+                select.innerHTML = '<option value="">Choose a doctor</option>' +
+                    this.doctors.map(doctor => 
+                        `<option value="${doctor.name} - ${doctor.specialty}">${doctor.name} - ${doctor.specialty}</option>`
+                    ).join('');
+            }
+
+            setupEventListeners() {
+                // Mobile menu
+                document.getElementById('mobile-menu-button').addEventListener('click', () => {
+                    document.getElementById('mobile-menu').classList.toggle('hidden');
+                });
+
+                // Filter buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const specialty = e.target.dataset.specialty;
+                        
+                        // Update active button
+                        document.querySelectorAll('.filter-btn').forEach(b => {
+                            b.classList.remove('bg-blue-600', 'text-white');
+                            b.classList.add('text-gray-700', 'dark:text-gray-300');
+                        });
+                        e.target.classList.add('bg-blue-600', 'text-white');
+                        e.target.classList.remove('text-gray-700', 'dark:text-gray-300');
+                        
+                        this.renderDoctors(specialty);
+                    });
+                });
+
+                // Form submission
+                document.getElementById('appointment-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit(e);
+                });
+
+                // Set minimum date to today
+                const dateInput = document.getElementById('date');
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+                dateInput.value = today;
+
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', () => {
+                    this.toggleTheme();
+                });
+            }
+
+            setupTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                this.setTheme(savedTheme);
+            }
+
+            setTheme(theme) {
+                this.currentTheme = theme;
+                
+                // Apply theme to document
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    document.body.classList.add('bg-gray-900');
+                    document.body.classList.remove('bg-gray-50');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    document.body.classList.remove('bg-gray-900');
+                    document.body.classList.add('bg-gray-50');
+                }
+                
+                // Update theme in localStorage
+                localStorage.setItem('theme', theme);
+                
+                // Update theme toggle button icon
+                const icon = document.querySelector('#theme-toggle i');
+                if (icon) {
+                    icon.className = theme === 'dark' ? 'fas fa-sun text-yellow-400' : 'fas fa-moon text-gray-600';
+                }
+                
+                // Apply theme to specific components
+                this.applyThemeToComponents(theme);
+            }
+
+            applyThemeToComponents(theme) {
+                // Update card backgrounds
+                const cards = document.querySelectorAll('.bg-white');
+                cards.forEach(card => {
+                    if (theme === 'dark') {
+                        card.classList.add('bg-gray-800', 'text-white');
+                        card.classList.remove('bg-white');
+                    } else {
+                        card.classList.remove('bg-gray-800', 'text-white');
+                        card.classList.add('bg-white');
+                    }
+                });
+            }
+
+            toggleTheme() {
+                const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                this.setTheme(newTheme);
+                this.showNotification(`Switched to ${newTheme} theme`, 'success');
+            }
+
+            async handleFormSubmit(e) {
+                const formData = new FormData(e.target);
+                const appointmentData = Object.fromEntries(formData.entries());
+                
+                const submitBtn = document.getElementById('submit-btn');
+                const submitText = document.getElementById('submit-text');
+                const spinner = document.getElementById('submit-spinner');
+
+                // Show loading state
+                submitText.textContent = 'Booking...';
+                spinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Save to localStorage
+                    const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                    const newAppointment = {
+                        ...appointmentData,
+                        id: Date.now(),
+                        status: 'confirmed',
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    appointments.push(newAppointment);
+                    localStorage.setItem('appointments', JSON.stringify(appointments));
+                    
+                    this.showNotification('Appointment booked successfully!', 'success');
+                    e.target.reset();
+                    
+                    // Reset date to today
+                    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+                    
+                    this.updateStats();
+                    this.triggerAppointmentsUpdate();
+                    
+                } catch (error) {
+                    this.showNotification('Error booking appointment. Please try again.', 'error');
+                } finally {
+                    submitText.textContent = 'Confirm Appointment';
+                    spinner.classList.add('hidden');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            bookWithDoctor(doctorName, specialty) {
+                const optionValue = `${doctorName} - ${specialty}`;
+                const doctorSelect = document.getElementById('doctor');
+                
+                for (let option of doctorSelect.options) {
+                    if (option.value === optionValue) {
+                        doctorSelect.value = optionValue;
+                        break;
+                    }
+                }
+                
+                document.getElementById('appointment').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
+
+            showNotification(message, type = 'info') {
+                const container = document.getElementById('notification-container');
+                const notification = document.createElement('div');
+                
+                const bgColor = {
+                    success: 'bg-green-500',
+                    error: 'bg-red-500',
+                    warning: 'bg-yellow-500',
+                    info: 'bg-blue-500'
+                }[type];
+
+                notification.className = `notification ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg fade-in`;
+                notification.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-${this.getNotificationIcon(type)}"></i>
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(notification);
+
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 5000);
+            }
+
+            getNotificationIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    warning: 'exclamation-triangle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            }
+
+            animateStats() {
+                const counters = {
+                    'doctors-count': this.doctors.length,
+                    'appointments-count': this.getAppointmentsCount(),
+                    'patients-count': Math.floor(this.getAppointmentsCount() * 1.5) // Simulate patient count
+                };
+
+                Object.entries(counters).forEach(([id, target]) => {
+                    this.animateCounter(id, 0, target, 2000);
+                });
+            }
+
+            animateCounter(elementId, start, end, duration) {
+                const element = document.getElementById(elementId);
+                let startTimestamp = null;
+
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    element.textContent = value;
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+
+                window.requestAnimationFrame(step);
+            }
+
+            getAppointmentsCount() {
+                const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                return appointments.length;
+            }
+
+            updateStats() {
+                document.getElementById('appointments-count').textContent = this.getAppointmentsCount();
+            }
+
+            setupRealTimeUpdates() {
+                // Simulate real-time updates
+                setInterval(() => {
+                    this.updateStats();
+                }, 30000); // Update every 30 seconds
+            }
+
+            triggerAppointmentsUpdate() {
+                window.dispatchEvent(new CustomEvent('appointmentsUpdated'));
+            }
+        }
+
+        // Admin functions with password protection
+        async function showAppointments() {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Invalid admin password', 'error');
+                return;
+            }
+
+            await refreshAppointmentsList();
+        }
+
+        async function refreshAppointmentsList() {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Please enter valid admin password first', 'error');
+                return;
+            }
+
+            try {
+                const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                const list = document.getElementById('appointments-list');
+                
+                if (appointments.length === 0) {
+                    list.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-calendar-times text-4xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600 dark:text-gray-300 text-lg">No appointments found.</p>
+                        </div>
+                    `;
+                } else {
+                    list.innerHTML = `
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-xl font-semibold dark:text-white">Appointments (${appointments.length})</h4>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">
+                                Last updated: ${new Date().toLocaleTimeString()}
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            ${appointments.map(apt => `
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-xl p-6 bg-white dark:bg-gray-800 fade-in">
+                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Appointment ID</p>
+                                            <p class="font-semibold dark:text-white">#${apt.id}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Patient</p>
+                                            <p class="font-semibold dark:text-white">${apt.fullName}</p>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">${apt.email}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Contact</p>
+                                            <p class="font-semibold dark:text-white">${apt.phone}</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Doctor & Schedule</p>
+                                            <p class="font-semibold dark:text-white">${apt.doctor}</p>
+                                            <p class="text-sm text-gray-600 dark:text-gray-300">${apt.date} at ${apt.time}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
+                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300">
+                                                <i class="fas fa-check-circle mr-1"></i>
+                                                ${apt.status}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    ${apt.notes ? `
+                                        <div class="mt-4">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Notes</p>
+                                            <p class="text-gray-700 dark:text-gray-300">${apt.notes}</p>
+                                        </div>
+                                    ` : ''}
+                                    <div class="mt-6 flex justify-end space-x-3">
+                                        <button onclick="updateAppointmentStatus(${apt.id})" 
+                                            class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center space-x-2">
+                                            <i class="fas fa-edit"></i>
+                                            <span>Update Status</span>
+                                        </button>
+                                        <button onclick="deleteAppointment(${apt.id})" 
+                                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2">
+                                            <i class="fas fa-trash"></i>
+                                            <span>Delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                list.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+                appSystem.showNotification('Error loading appointments', 'error');
+            }
+        }
+
+        async function deleteAppointment(appointmentId) {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Please enter valid admin password first', 'error');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                try {
+                    const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                    const filteredAppointments = appointments.filter(apt => apt.id !== appointmentId);
+                    localStorage.setItem('appointments', JSON.stringify(filteredAppointments));
+                    
+                    appSystem.showNotification('Appointment deleted successfully', 'success');
+                    setTimeout(refreshAppointmentsList, 1000);
+                    
+                } catch (error) {
+                    appSystem.showNotification('Error deleting appointment', 'error');
+                }
+            }
+        }
+
+        async function clearAllAppointments() {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Please enter valid admin password first', 'error');
+                return;
+            }
+
+            if (confirm('Are you sure you want to clear all appointments? This action cannot be undone.')) {
+                try {
+                    localStorage.removeItem('appointments');
+                    appSystem.showNotification('All appointments cleared successfully', 'success');
+                    setTimeout(refreshAppointmentsList, 1000);
+                    
+                } catch (error) {
+                    appSystem.showNotification('Error clearing appointments', 'error');
+                }
+            }
+        }
+
+        function updateAppointmentStatus(appointmentId) {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Please enter valid admin password first', 'error');
+                return;
+            }
+
+            const newStatus = prompt('Enter new status (confirmed, cancelled, completed):', 'confirmed');
+            if (newStatus) {
+                const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                const appointment = appointments.find(apt => apt.id === appointmentId);
+                if (appointment) {
+                    appointment.status = newStatus;
+                    localStorage.setItem('appointments', JSON.stringify(appointments));
+                    appSystem.showNotification('Appointment status updated', 'success');
+                    refreshAppointmentsList();
+                }
+            }
+        }
+
+        // Initialize the application
+        const appSystem = new EnhancedAppointmentSystem();
+
+        // Listen for appointment updates
+        window.addEventListener('appointmentsUpdated', function() {
+            const appointmentsList = document.getElementById('appointments-list');
+            if (!appointmentsList.classList.contains('hidden')) {
+                refreshAppointmentsList();
+            }
+        });
+    </script>
+</body>
+</html>
