@@ -76,10 +76,6 @@
         }
 
         /* Dark theme styles */
-        .dark {
-            color-scheme: dark;
-        }
-
         .dark body {
             background-color: #111827;
             color: #f9fafb;
@@ -153,6 +149,74 @@
         .dark .border {
             border-color: #374151 !important;
         }
+        
+        /* Fix for dark mode on html element */
+        html.dark {
+            background-color: #111827;
+        }
+        
+        /* Fix for responsive filter buttons */
+        @media (max-width: 640px) {
+            .filter-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .filter-btn {
+                flex: 1 0 auto;
+                min-width: 120px;
+                margin: 2px;
+            }
+        }
+        
+        /* Status badge styles */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-confirmed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-completed {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .dark .status-pending {
+            background-color: #451a03;
+            color: #fbbf24;
+        }
+        
+        .dark .status-confirmed {
+            background-color: #064e3b;
+            color: #34d399;
+        }
+        
+        .dark .status-cancelled {
+            background-color: #7f1d1d;
+            color: #f87171;
+        }
+        
+        .dark .status-completed {
+            background-color: #1e3a8a;
+            color: #60a5fa;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
@@ -160,7 +224,7 @@
     <div id="notification-container"></div>
 
     <!-- Header -->
-    <header class="sticky-nav shadow-sm z-50 dark:bg-gray-800">
+    <header class="sticky-nav shadow-sm z-50">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -168,39 +232,39 @@
                         <i class="fas fa-stethoscope text-white text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-blue-700 dark:text-blue-400">WellBeing Hospital</h1>
-                        <p class="text-xs text-gray-600 dark:text-gray-300">Quality Healthcare</p>
+                        <h1 class="text-2xl font-bold text-blue-700">WellBeing Hospital</h1>
+                        <p class="text-xs text-gray-600">Quality Healthcare</p>
                     </div>
                 </div>
                 
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#hero">
+                    <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1" href="#hero">
                         <i class="fas fa-home text-sm"></i>
                         <span>Home</span>
                     </a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#doctors">
+                    <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1" href="#doctors">
                         <i class="fas fa-user-md text-sm"></i>
                         <span>Doctors</span>
                     </a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#appointment">
+                    <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1" href="#appointment">
                         <i class="fas fa-calendar-check text-sm"></i>
                         <span>Book Appointment</span>
                     </a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#services">
+                    <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1" href="#services">
                         <i class="fas fa-procedures text-sm"></i>
                         <span>Services</span>
                     </a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 flex items-center space-x-1" href="#admin">
+                    <a class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1" href="#admin-login">
                         <i class="fas fa-cogs text-sm"></i>
                         <span>Admin</span>
                     </a>
                 </nav>
 
                 <div class="flex items-center space-x-4">
-                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                        <i class="fas fa-moon text-gray-600 dark:text-gray-300"></i>
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-moon text-gray-600"></i>
                     </button>
-                    <button class="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none" id="mobile-menu-button">
+                    <button class="lg:hidden text-gray-700 focus:outline-none" id="mobile-menu-button">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -208,25 +272,25 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div class="lg:hidden hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700" id="mobile-menu">
+        <div class="lg:hidden hidden bg-white border-t" id="mobile-menu">
             <div class="container mx-auto px-4 py-3 space-y-3">
-                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#hero">
+                <a class="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#hero">
                     <i class="fas fa-home w-5"></i>
                     <span>Home</span>
                 </a>
-                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#doctors">
+                <a class="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#doctors">
                     <i class="fas fa-user-md w-5"></i>
                     <span>Doctors</span>
                 </a>
-                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#appointment">
+                <a class="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#appointment">
                     <i class="fas fa-calendar-check w-5"></i>
                     <span>Book Appointment</span>
                 </a>
-                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#services">
+                <a class="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#services">
                     <i class="fas fa-procedures w-5"></i>
                     <span>Services</span>
                 </a>
-                <a class="block py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#admin">
+                <a class="block py-2 px-4 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors flex items-center space-x-2" href="#admin-login">
                     <i class="fas fa-cogs w-5"></i>
                     <span>Admin</span>
                 </a>
@@ -239,14 +303,14 @@
         <section id="hero" class="gradient-bg text-white py-20">
             <div class="container mx-auto px-4 text-center">
                 <div class="max-w-4xl mx-auto">
-                    <h1 class="text-5xl font-bold mb-6 slide-in">Your Health is Our Priority</h1>
-                    <p class="text-xl mb-8 opacity-90">Book appointments with top specialists. Quality healthcare made simple and accessible.</p>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 slide-in">Your Health is Our Priority</h1>
+                    <p class="text-lg md:text-xl mb-8 opacity-90">Book appointments with top specialists. Quality healthcare made simple and accessible.</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#appointment" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
+                        <a href="#appointment" class="bg-white text-blue-600 px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
                             <i class="fas fa-calendar-plus"></i>
                             <span>Book Appointment Now</span>
                         </a>
-                        <a href="#doctors" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
+                        <a href="#doctors" class="border-2 border-white text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-200 inline-flex items-center justify-center space-x-2">
                             <i class="fas fa-user-md"></i>
                             <span>Find a Doctor</span>
                         </a>
@@ -256,159 +320,159 @@
         </section>
 
         <!-- Stats Section -->
-        <section class="bg-white dark:bg-gray-800 py-12">
+        <section class="bg-white py-12">
             <div class="container mx-auto px-4">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
                     <div class="fade-in">
                         <div class="text-3xl font-bold text-blue-600 mb-2" id="doctors-count">0</div>
-                        <div class="text-gray-600 dark:text-gray-300">Expert Doctors</div>
+                        <div class="text-gray-600">Expert Doctors</div>
                     </div>
                     <div class="fade-in">
                         <div class="text-3xl font-bold text-green-600 mb-2" id="appointments-count">0</div>
-                        <div class="text-gray-600 dark:text-gray-300">Appointments</div>
+                        <div class="text-gray-600">Appointments</div>
                     </div>
                     <div class="fade-in">
                         <div class="text-3xl font-bold text-purple-600 mb-2" id="patients-count">0</div>
-                        <div class="text-gray-600 dark:text-gray-300">Happy Patients</div>
+                        <div class="text-gray-600">Happy Patients</div>
                     </div>
                     <div class="fade-in">
                         <div class="text-3xl font-bold text-orange-600 mb-2">24/7</div>
-                        <div class="text-gray-600 dark:text-gray-300">Support</div>
+                        <div class="text-gray-600">Support</div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Services Section -->
-        <section id="services" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <section id="services" class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-gray-800 dark:text-white mb-12">Our Medical Services</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">Our Medical Services</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-heartbeat text-blue-600 dark:text-blue-400 text-xl"></i>
+                    <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-heartbeat text-blue-600 text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Cardiology</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Comprehensive heart care with advanced diagnostic and treatment facilities.</p>
+                        <h3 class="text-xl font-semibold mb-3">Cardiology</h3>
+                        <p class="text-gray-600">Comprehensive heart care with advanced diagnostic and treatment facilities.</p>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
-                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-baby text-green-600 dark:text-green-400 text-xl"></i>
+                    <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-baby text-green-600 text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Pediatrics</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Specialized care for children's health and developmental needs.</p>
+                        <h3 class="text-xl font-semibold mb-3">Pediatrics</h3>
+                        <p class="text-gray-600">Specialized care for children's health and developmental needs.</p>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 card-hover border border-gray-200 dark:border-gray-700">
-                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-brain text-purple-600 dark:text-purple-400 text-xl"></i>
+                    <div class="bg-white rounded-xl p-6 card-hover border border-gray-200">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fas fa-brain text-purple-600 text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Neurology</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Expert care for brain and nervous system disorders.</p>
+                        <h3 class="text-xl font-semibold mb-3">Neurology</h3>
+                        <p class="text-gray-600">Expert care for brain and nervous system disorders.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Doctors Section -->
-        <section id="doctors" class="py-16 bg-white dark:bg-gray-800">
+        <section id="doctors" class="py-16 bg-white">
             <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-gray-800 dark:text-white mb-4">Meet Our Specialists</h2>
-                <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">Our team of experienced doctors is dedicated to providing you with the best medical care.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">Meet Our Specialists</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Our team of experienced doctors is dedicated to providing you with the best medical care.</p>
                 
                 <div class="flex justify-center mb-8">
-                    <div class="flex space-x-2 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                    <div class="flex flex-wrap justify-center gap-2 bg-gray-100 p-1 rounded-lg filter-buttons">
                         <button class="filter-btn px-4 py-2 rounded-md transition-all bg-blue-600 text-white" data-specialty="all">All</button>
-                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Cardiologist">Cardiology</button>
-                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Pediatrician">Pediatrics</button>
-                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Dermatologist">Dermatology</button>
-                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700 dark:text-gray-300" data-specialty="Neurologist">Neurology</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700" data-specialty="Cardiologist">Cardiology</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700" data-specialty="Pediatrician">Pediatrics</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700" data-specialty="Dermatologist">Dermatology</button>
+                        <button class="filter-btn px-4 py-2 rounded-md transition-all text-gray-700" data-specialty="Neurologist">Neurology</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="doctors-container">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" id="doctors-container">
                     <!-- Doctors loaded dynamically -->
                 </div>
             </div>
         </section>
 
         <!-- Appointment Section -->
-        <section id="appointment" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <section id="appointment" class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div class="md:flex">
-                        <div class="md:w-2/5 bg-blue-600 text-white p-8">
-                            <h2 class="text-3xl font-bold mb-4">Book Your Appointment</h2>
-                            <p class="mb-6">Fill out the form and our team will contact you to confirm your appointment.</p>
+                        <div class="md:w-2/5 bg-blue-600 text-white p-6 md:p-8">
+                            <h2 class="text-2xl md:text-3xl font-bold mb-4">Book Your Appointment</h2>
+                            <p class="mb-6 text-sm md:text-base">Fill out the form and our team will contact you to confirm your appointment.</p>
                             <div class="space-y-4">
                                 <div class="flex items-center space-x-3">
                                     <i class="fas fa-clock text-blue-200"></i>
-                                    <span>Quick & Easy Booking</span>
+                                    <span class="text-sm md:text-base">Quick & Easy Booking</span>
                                 </div>
                                 <div class="flex items-center space-x-3">
                                     <i class="fas fa-shield-alt text-blue-200"></i>
-                                    <span>Secure & Confidential</span>
+                                    <span class="text-sm md:text-base">Secure & Confidential</span>
                                 </div>
                                 <div class="flex items-center space-x-3">
                                     <i class="fas fa-calendar-check text-blue-200"></i>
-                                    <span>Instant Confirmation</span>
+                                    <span class="text-sm md:text-base">Instant Confirmation</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="md:w-3/5 p-8">
+                        <div class="md:w-3/5 p-6 md:p-8">
                             <form id="appointment-form" class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="fullName">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="fullName">
                                             Full Name *
                                         </label>
                                         <input type="text" id="fullName" name="fullName" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="Enter your full name">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="email">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="email">
                                             Email Address *
                                         </label>
                                         <input type="email" id="email" name="email" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="your@email.com">
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="phone">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="phone">
                                             Phone Number *
                                         </label>
                                         <input type="tel" id="phone" name="phone" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="+1 (555) 123-4567">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="doctor">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="doctor">
                                             Select Doctor *
                                         </label>
                                         <select id="doctor" name="doctor" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
                                             <option value="">Choose a doctor</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="date">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="date">
                                             Preferred Date *
                                         </label>
                                         <input type="date" id="date" name="date" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="time">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="time">
                                             Preferred Time *
                                         </label>
                                         <select id="time" name="time" required
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
                                             <option value="">Select time</option>
                                             <option value="09:00">09:00 AM</option>
                                             <option value="10:00">10:00 AM</option>
@@ -423,11 +487,11 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="notes">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="notes">
                                         Additional Notes
                                     </label>
                                     <textarea id="notes" name="notes" rows="3"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                                         placeholder="Any specific concerns or requests..."></textarea>
                                 </div>
 
@@ -445,31 +509,109 @@
             </div>
         </section>
 
-        <!-- Admin Panel -->
-        <section id="admin" class="py-16 bg-white dark:bg-gray-800">
+        <!-- Admin Login Section (Hidden by default, shown after clicking Admin link) -->
+        <section id="admin-login" class="py-16 bg-white hidden">
             <div class="container mx-auto px-4">
-                <div class="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
-                    <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">Admin Dashboard</h2>
+                <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+                    <p class="text-center text-gray-600 mb-8">Enter admin password to access the dashboard</p>
                     
-                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-8">
-                        <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-                            <input type="password" id="adminPassword" 
-                                class="flex-grow px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="adminLoginPassword">
+                                Admin Password *
+                            </label>
+                            <input type="password" id="adminLoginPassword" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 placeholder="Enter admin password">
-                            <button onclick="showAppointments()" 
-                                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
-                                <i class="fas fa-eye"></i>
-                                <span>View Appointments</span>
+                        </div>
+                        
+                        <button onclick="loginToAdmin()" 
+                            class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login to Admin Dashboard</span>
+                        </button>
+                        
+                        <div class="text-center">
+                            <button onclick="goBackToHome()" class="text-gray-600 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                Back to Home
                             </button>
-                            <button onclick="refreshAppointmentsList()" 
-                                class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2">
-                                <i class="fas fa-sync-alt"></i>
-                                <span>Refresh</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel (Hidden until login) -->
+        <section id="admin-panel" class="py-16 bg-white hidden">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-0">Admin Dashboard</h2>
+                        <div class="flex gap-2">
+                            <button onclick="goBackToHome()" 
+                                class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fas fa-home"></i>
+                                <span>Back to Home</span>
                             </button>
-                            <button onclick="clearAllAppointments()" 
-                                class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center space-x-2">
-                                <i class="fas fa-trash"></i>
-                                <span>Clear All</span>
+                            <button onclick="logoutAdmin()" 
+                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                        <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+                            <div class="flex-grow">
+                                <input type="password" id="adminPassword" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    placeholder="Enter admin password" value="admin123">
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="showAppointments()" 
+                                    class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+                                    <i class="fas fa-eye"></i>
+                                    <span>View Appointments</span>
+                                </button>
+                                <button onclick="refreshAppointmentsList()" 
+                                    class="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Refresh</span>
+                                </button>
+                                <button onclick="clearAllAppointments()" 
+                                    class="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center space-x-2">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Clear All</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointment Status Filter -->
+                    <div class="mb-8">
+                        <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+                            <button onclick="filterAppointments('all')" 
+                                class="status-filter-btn px-4 py-2 rounded-lg bg-blue-600 text-white">
+                                All Appointments
+                            </button>
+                            <button onclick="filterAppointments('pending')" 
+                                class="status-filter-btn px-4 py-2 rounded-lg bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
+                                Pending
+                            </button>
+                            <button onclick="filterAppointments('confirmed')" 
+                                class="status-filter-btn px-4 py-2 rounded-lg bg-green-100 text-green-800 hover:bg-green-200">
+                                Confirmed
+                            </button>
+                            <button onclick="filterAppointments('cancelled')" 
+                                class="status-filter-btn px-4 py-2 rounded-lg bg-red-100 text-red-800 hover:bg-red-200">
+                                Cancelled
+                            </button>
+                            <button onclick="filterAppointments('completed')" 
+                                class="status-filter-btn px-4 py-2 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200">
+                                Completed
                             </button>
                         </div>
                     </div>
@@ -529,7 +671,6 @@
     </footer>
 
     <script>
-        
         class EnhancedAppointmentSystem {
             constructor() {
                 this.currentTheme = 'light';
@@ -629,28 +770,28 @@
                     : this.doctors.filter(doctor => doctor.specialty === filter);
 
                 container.innerHTML = filteredDoctors.map(doctor => `
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden card-hover fade-in border border-gray-200 dark:border-gray-700">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover fade-in border border-gray-200">
                         <div class="relative">
-                            <img src="${doctor.image}" alt="${doctor.name}" class="w-full h-64 object-cover">
-                            <div class="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
+                            <img src="${doctor.image}" alt="${doctor.name}" class="w-full h-48 md:h-64 object-cover">
+                            <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs md:text-sm font-semibold">
                                 ${doctor.rating} ★
                             </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${doctor.name}</h3>
-                            <p class="text-blue-600 dark:text-blue-400 font-semibold mb-3">${doctor.specialty}</p>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">${doctor.description}</p>
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-sm text-gray-500 dark:text-gray-400">${doctor.experience} experience</span>
-                                <span class="text-sm ${doctor.available ? 'text-green-600' : 'text-red-600'} font-semibold">
+                        <div class="p-4 md:p-6">
+                            <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">${doctor.name}</h3>
+                            <p class="text-blue-600 font-semibold mb-2 md:mb-3">${doctor.specialty}</p>
+                            <p class="text-gray-600 text-sm md:text-base mb-3 md:mb-4">${doctor.description}</p>
+                            <div class="flex justify-between items-center mb-3 md:mb-4">
+                                <span class="text-xs md:text-sm text-gray-500">${doctor.experience} experience</span>
+                                <span class="text-xs md:text-sm ${doctor.available ? 'text-green-600' : 'text-red-600'} font-semibold">
                                     ${doctor.available ? 'Available' : 'Not Available'}
                                 </span>
                             </div>
                             <button onclick="appSystem.bookWithDoctor('${doctor.name}', '${doctor.specialty}')" 
-                                class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2 ${!doctor.available ? 'opacity-50 cursor-not-allowed' : ''}"
+                                class="w-full bg-blue-600 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2 ${!doctor.available ? 'opacity-50 cursor-not-allowed' : ''}"
                                 ${!doctor.available ? 'disabled' : ''}>
                                 <i class="fas fa-calendar-plus"></i>
-                                <span>Book Appointment</span>
+                                <span class="text-sm md:text-base">Book Appointment</span>
                             </button>
                         </div>
                     </div>
@@ -671,6 +812,21 @@
                     document.getElementById('mobile-menu').classList.toggle('hidden');
                 });
 
+                // Close mobile menu when clicking links
+                document.querySelectorAll('#mobile-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        document.getElementById('mobile-menu').classList.add('hidden');
+                    });
+                });
+
+                // Admin link navigation
+                document.querySelectorAll('a[href="#admin-login"]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showAdminLogin();
+                    });
+                });
+
                 // Filter buttons
                 document.querySelectorAll('.filter-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -679,10 +835,10 @@
                         // Update active button
                         document.querySelectorAll('.filter-btn').forEach(b => {
                             b.classList.remove('bg-blue-600', 'text-white');
-                            b.classList.add('text-gray-700', 'dark:text-gray-300');
+                            b.classList.add('text-gray-700');
                         });
                         e.target.classList.add('bg-blue-600', 'text-white');
-                        e.target.classList.remove('text-gray-700', 'dark:text-gray-300');
+                        e.target.classList.remove('text-gray-700');
                         
                         this.renderDoctors(specialty);
                     });
@@ -714,42 +870,20 @@
             setTheme(theme) {
                 this.currentTheme = theme;
                 
-                // Apply theme to document
                 if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                    document.body.classList.add('bg-gray-900');
-                    document.body.classList.remove('bg-gray-50');
+                    document.body.classList.add('dark');
                 } else {
                     document.documentElement.classList.remove('dark');
-                    document.body.classList.remove('bg-gray-900');
-                    document.body.classList.add('bg-gray-50');
+                    document.body.classList.remove('dark');
                 }
                 
-                // Update theme in localStorage
                 localStorage.setItem('theme', theme);
                 
-                // Update theme toggle button icon
                 const icon = document.querySelector('#theme-toggle i');
                 if (icon) {
                     icon.className = theme === 'dark' ? 'fas fa-sun text-yellow-400' : 'fas fa-moon text-gray-600';
                 }
-                
-                // Apply theme to specific components
-                this.applyThemeToComponents(theme);
-            }
-
-            applyThemeToComponents(theme) {
-                // Update card backgrounds
-                const cards = document.querySelectorAll('.bg-white');
-                cards.forEach(card => {
-                    if (theme === 'dark') {
-                        card.classList.add('bg-gray-800', 'text-white');
-                        card.classList.remove('bg-white');
-                    } else {
-                        card.classList.remove('bg-gray-800', 'text-white');
-                        card.classList.add('bg-white');
-                    }
-                });
             }
 
             toggleTheme() {
@@ -766,31 +900,27 @@
                 const submitText = document.getElementById('submit-text');
                 const spinner = document.getElementById('submit-spinner');
 
-                // Show loading state
                 submitText.textContent = 'Booking...';
                 spinner.classList.remove('hidden');
                 submitBtn.disabled = true;
 
                 try {
-                    // Simulate API call
                     await new Promise(resolve => setTimeout(resolve, 2000));
                     
-                    // Save to localStorage
                     const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
                     const newAppointment = {
                         ...appointmentData,
                         id: Date.now(),
-                        status: 'confirmed',
+                        status: 'pending', // Changed from 'confirmed' to 'pending'
                         createdAt: new Date().toISOString()
                     };
                     
                     appointments.push(newAppointment);
                     localStorage.setItem('appointments', JSON.stringify(appointments));
                     
-                    this.showNotification('Appointment booked successfully!', 'success');
+                    this.showNotification('Appointment booked successfully! Our team will contact you soon.', 'success');
                     e.target.reset();
                     
-                    // Reset date to today
                     document.getElementById('date').value = new Date().toISOString().split('T')[0];
                     
                     this.updateStats();
@@ -832,11 +962,11 @@
                     info: 'bg-blue-500'
                 }[type];
 
-                notification.className = `notification ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg fade-in`;
+                notification.className = `notification ${bgColor} text-white px-4 py-3 md:px-6 md:py-4 rounded-lg shadow-lg fade-in`;
                 notification.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-${this.getNotificationIcon(type)}"></i>
-                        <span>${message}</span>
+                        <span class="text-sm md:text-base">${message}</span>
                         <button onclick="this.parentElement.parentElement.remove()" class="ml-4">
                             <i class="fas fa-times"></i>
                         </button>
@@ -866,7 +996,7 @@
                 const counters = {
                     'doctors-count': this.doctors.length,
                     'appointments-count': this.getAppointmentsCount(),
-                    'patients-count': Math.floor(this.getAppointmentsCount() * 1.5) // Simulate patient count
+                    'patients-count': Math.floor(this.getAppointmentsCount() * 1.5)
                 };
 
                 Object.entries(counters).forEach(([id, target]) => {
@@ -902,18 +1032,113 @@
             }
 
             setupRealTimeUpdates() {
-                // Simulate real-time updates
                 setInterval(() => {
                     this.updateStats();
-                }, 30000); // Update every 30 seconds
+                }, 30000);
             }
 
             triggerAppointmentsUpdate() {
                 window.dispatchEvent(new CustomEvent('appointmentsUpdated'));
             }
+
+            showAdminLogin() {
+                // Hide all other sections
+                document.getElementById('hero').classList.add('hidden');
+                document.getElementById('services').classList.add('hidden');
+                document.getElementById('doctors').classList.add('hidden');
+                document.getElementById('appointment').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                
+                // Show admin login
+                document.getElementById('admin-login').classList.remove('hidden');
+                
+                // Smooth scroll to admin login
+                document.getElementById('admin-login').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
+
+            hideAdminLogin() {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                
+                // Show all other sections
+                document.getElementById('hero').classList.remove('hidden');
+                document.getElementById('services').classList.remove('hidden');
+                document.getElementById('doctors').classList.remove('hidden');
+                document.getElementById('appointment').classList.remove('hidden');
+            }
+
+            showAdminPanel() {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                
+                // Hide main sections
+                document.getElementById('hero').classList.add('hidden');
+                document.getElementById('services').classList.add('hidden');
+                document.getElementById('doctors').classList.add('hidden');
+                document.getElementById('appointment').classList.add('hidden');
+                
+                // Smooth scroll to admin panel
+                document.getElementById('admin-panel').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
+
+            goBackToHome() {
+                // Hide admin sections
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-panel').classList.add('hidden');
+                
+                // Show all main sections
+                document.getElementById('hero').classList.remove('hidden');
+                document.getElementById('services').classList.remove('hidden');
+                document.getElementById('doctors').classList.remove('hidden');
+                document.getElementById('appointment').classList.remove('hidden');
+                
+                // Clear admin password fields
+                document.getElementById('adminLoginPassword').value = '';
+                document.getElementById('adminPassword').value = 'admin123';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                this.showNotification('Returned to homepage', 'info');
+            }
         }
 
-        // Admin functions with password protection
+        // Global function to go back to home
+        function goBackToHome() {
+            appSystem.goBackToHome();
+        }
+
+        // Admin functions
+        function loginToAdmin() {
+            const password = document.getElementById('adminLoginPassword').value;
+            if (password === 'admin123') {
+                appSystem.showNotification('Admin login successful', 'success');
+                setTimeout(() => {
+                    appSystem.showAdminPanel();
+                }, 1000);
+            } else {
+                appSystem.showNotification('Invalid admin password', 'error');
+            }
+        }
+
+        function logoutAdmin() {
+            appSystem.showNotification('Logged out successfully', 'success');
+            setTimeout(() => {
+                appSystem.goBackToHome();
+            }, 1000);
+        }
+
+        let currentStatusFilter = 'all';
+
+        function filterAppointments(status) {
+            currentStatusFilter = status;
+            refreshAppointmentsList();
+        }
+
         async function showAppointments() {
             const password = document.getElementById('adminPassword').value;
             if (password !== 'admin123') {
@@ -935,69 +1160,81 @@
                 const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
                 const list = document.getElementById('appointments-list');
                 
-                if (appointments.length === 0) {
+                // Filter appointments by status
+                let filteredAppointments = appointments;
+                if (currentStatusFilter !== 'all') {
+                    filteredAppointments = appointments.filter(apt => apt.status === currentStatusFilter);
+                }
+                
+                if (filteredAppointments.length === 0) {
                     list.innerHTML = `
                         <div class="text-center py-8">
                             <i class="fas fa-calendar-times text-4xl text-gray-400 mb-4"></i>
-                            <p class="text-gray-600 dark:text-gray-300 text-lg">No appointments found.</p>
+                            <p class="text-gray-600 text-lg">No appointments found${currentStatusFilter !== 'all' ? ` with status: ${currentStatusFilter}` : ''}.</p>
                         </div>
                     `;
                 } else {
                     list.innerHTML = `
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="text-xl font-semibold dark:text-white">Appointments (${appointments.length})</h4>
-                            <div class="text-sm text-gray-600 dark:text-gray-300">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                            <h4 class="text-xl font-semibold text-gray-800 mb-2 md:mb-0">Appointments (${filteredAppointments.length})${currentStatusFilter !== 'all' ? ` - ${currentStatusFilter.charAt(0).toUpperCase() + currentStatusFilter.slice(1)}` : ''}</h4>
+                            <div class="text-sm text-gray-600">
                                 Last updated: ${new Date().toLocaleTimeString()}
                             </div>
                         </div>
                         <div class="space-y-4">
-                            ${appointments.map(apt => `
-                                <div class="border border-gray-200 dark:border-gray-600 rounded-xl p-6 bg-white dark:bg-gray-800 fade-in">
-                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            ${filteredAppointments.map(apt => `
+                                <div class="border border-gray-200 rounded-xl p-4 md:p-6 bg-gray-50 fade-in">
+                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                                         <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Appointment ID</p>
-                                            <p class="font-semibold dark:text-white">#${apt.id}</p>
+                                            <p class="text-sm text-gray-500">Appointment ID</p>
+                                            <p class="font-semibold text-gray-800">#${apt.id}</p>
+                                            <p class="text-xs text-gray-400">${new Date(apt.createdAt).toLocaleDateString()}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Patient</p>
-                                            <p class="font-semibold dark:text-white">${apt.fullName}</p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-300">${apt.email}</p>
+                                            <p class="text-sm text-gray-500">Patient</p>
+                                            <p class="font-semibold text-gray-800">${apt.fullName}</p>
+                                            <p class="text-sm text-gray-600">${apt.email}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Contact</p>
-                                            <p class="font-semibold dark:text-white">${apt.phone}</p>
+                                            <p class="text-sm text-gray-500">Contact</p>
+                                            <p class="font-semibold text-gray-800">${apt.phone}</p>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mt-4">
                                         <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Doctor & Schedule</p>
-                                            <p class="font-semibold dark:text-white">${apt.doctor}</p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-300">${apt.date} at ${apt.time}</p>
+                                            <p class="text-sm text-gray-500">Doctor & Schedule</p>
+                                            <p class="font-semibold text-gray-800">${apt.doctor}</p>
+                                            <p class="text-sm text-gray-600">${apt.date} at ${apt.time}</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300">
-                                                <i class="fas fa-check-circle mr-1"></i>
-                                                ${apt.status}
+                                            <p class="text-sm text-gray-500">Status</p>
+                                            <span class="status-badge status-${apt.status}">
+                                                <i class="fas fa-${getStatusIcon(apt.status)} mr-1"></i>
+                                                ${apt.status.charAt(0).toUpperCase() + apt.status.slice(1)}
                                             </span>
                                         </div>
                                     </div>
                                     ${apt.notes ? `
                                         <div class="mt-4">
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">Notes</p>
-                                            <p class="text-gray-700 dark:text-gray-300">${apt.notes}</p>
+                                            <p class="text-sm text-gray-500">Notes</p>
+                                            <p class="text-gray-700">${apt.notes}</p>
                                         </div>
                                     ` : ''}
-                                    <div class="mt-6 flex justify-end space-x-3">
-                                        <button onclick="updateAppointmentStatus(${apt.id})" 
-                                            class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center space-x-2">
-                                            <i class="fas fa-edit"></i>
-                                            <span>Update Status</span>
-                                        </button>
+                                    <div class="mt-4 md:mt-6 flex flex-wrap gap-2 justify-end">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-500">Update Status:</span>
+                                            <select onchange="updateAppointmentStatus(${apt.id}, this.value)" 
+                                                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                                <option value="pending" ${apt.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                                <option value="confirmed" ${apt.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                                                <option value="cancelled" ${apt.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                                <option value="completed" ${apt.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                            </select>
+                                        </div>
                                         <button onclick="deleteAppointment(${apt.id})" 
-                                            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2">
+                                            class="bg-red-500 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2">
                                             <i class="fas fa-trash"></i>
-                                            <span>Delete</span>
+                                            <span class="text-sm md:text-base">Delete</span>
                                         </button>
                                     </div>
                                 </div>
@@ -1009,6 +1246,33 @@
             } catch (error) {
                 console.error('Error loading appointments:', error);
                 appSystem.showNotification('Error loading appointments', 'error');
+            }
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                pending: 'clock',
+                confirmed: 'check-circle',
+                cancelled: 'times-circle',
+                completed: 'check-double'
+            };
+            return icons[status] || 'info-circle';
+        }
+
+        function updateAppointmentStatus(appointmentId, newStatus) {
+            const password = document.getElementById('adminPassword').value;
+            if (password !== 'admin123') {
+                appSystem.showNotification('Please enter valid admin password first', 'error');
+                return;
+            }
+
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const appointment = appointments.find(apt => apt.id === appointmentId);
+            if (appointment) {
+                appointment.status = newStatus;
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                appSystem.showNotification(`Appointment status updated to ${newStatus}`, 'success');
+                refreshAppointmentsList();
             }
         }
 
@@ -1049,26 +1313,6 @@
                     
                 } catch (error) {
                     appSystem.showNotification('Error clearing appointments', 'error');
-                }
-            }
-        }
-
-        function updateAppointmentStatus(appointmentId) {
-            const password = document.getElementById('adminPassword').value;
-            if (password !== 'admin123') {
-                appSystem.showNotification('Please enter valid admin password first', 'error');
-                return;
-            }
-
-            const newStatus = prompt('Enter new status (confirmed, cancelled, completed):', 'confirmed');
-            if (newStatus) {
-                const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
-                const appointment = appointments.find(apt => apt.id === appointmentId);
-                if (appointment) {
-                    appointment.status = newStatus;
-                    localStorage.setItem('appointments', JSON.stringify(appointments));
-                    appSystem.showNotification('Appointment status updated', 'success');
-                    refreshAppointmentsList();
                 }
             }
         }
